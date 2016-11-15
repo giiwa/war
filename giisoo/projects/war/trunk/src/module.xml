@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module version="1.0">
+  <id>4434</id>
+  <name>war</name>
+  <package>org.giiwa.war.web</package>
+  <screenshot>/images/demo_screenshot.png</screenshot>
+  <version>1.0</version>
+  <build>0</build>
+  <enabled>true</enabled>
+  <readme>war management module</readme>
+  <listener>
+    <!--add module listener here, please refer IListener interface-->
+    <class>org.giiwa.war.web.WarListener</class>
+  </listener>
+  <setting>
+    <!--TODO, remove it, please refer module.get(d1)-->
+    <param name="d1" value="1"/>
+  </setting>
+  <filter>
+    <!--TODO, remove it, please refer web.IFilter-->
+    <pattern>/user/login</pattern>
+    <class>org.giiwa.demo.web.UserFilter</class>
+  </filter>
+  <required>
+    <!--add all required modules here-->
+    <module name="default" minversion="1.2.1611150948" maxversion="1.2.*"/>
+  </required>
+  <license>Commercial License</license>
+</module>
