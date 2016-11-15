@@ -13,15 +13,6 @@
     <!--add module listener here, please refer IListener interface-->
     <class>org.giiwa.war.web.WarListener</class>
   </listener>
-  <setting>
-    <!--TODO, remove it, please refer module.get(d1)-->
-    <param name="d1" value="1"/>
-  </setting>
-  <filter>
-    <!--TODO, remove it, please refer web.IFilter-->
-    <pattern>/user/login</pattern>
-    <class>org.giiwa.demo.web.UserFilter</class>
-  </filter>
   <required>
     <!--add all required modules here-->
     <module name="default" minversion="1.2.1611150948" maxversion="1.2.*"/>

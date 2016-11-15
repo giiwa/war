@@ -1,0 +1,84 @@
+<div class='head'>$lang.get('war.index.title')</div>
+
+#parse('/widget/widget.message.html')
+
+<div class='tabs'>
+	<a href='/admin/war' class='selected'>$lang.get('a.wars')</a>
+</div>
+
+<div class='notes'>
+	$lang.get('notes.war.module')
+</div>
+
+<input type='hidden' name='repo'/>
+
+<table id='statichtml-table' class='tablesorter nospace' border="0" cellpadding="0" cellspacing="1">
+	<thead>
+		<tr>
+			<th>$lang.get('file.name')</th>
+			<th>$lang.get('file.size')</th>
+			<th>$lang.get('file.updated')</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+#if($root!=1)
+	<tr>
+		<td><a href="/admin/war?f=$!this.path($f.getParentFile())">..</a></td>
+		<td colspan="3">&nbsp;</td>
+	</tr>
+#end
+#foreach($f1 in $list)
+	<tr>
+		<td>
+			#if($f1.isFile())
+			<span class="icon-file-empty">$f1.name</span>
+			#else
+			<a class="icon-folder" href="/admin/war?f=$this.path($f1)">$f1.name</a>
+			#end
+		</td>
+		<td>
+			#if($f1.isFile())
+			$lang.size($!f1.length())
+			#end
+		</td>
+		<td>$!lang.format($f1.lastModified(), 'yyyy-MM-dd HH:mm:ss')</td>
+		<td>
+			<a href='javascript:;' onclick="_delete('$this.path($f1)', this)">$lang.get('a.delete')</a>
+		</td>
+	</tr>
+#end
+	</tbody>
+</table>
+
+<script>
+function _delete(id, o) {
+	if(confirm("$lang.get('title.are_u_sure_delete')")) {
+		$.post("/admin/war/delete", {f:id}, function(d){
+			$(o).parent().parent().remove();
+		})
+	}
+}
+
+$(function() {
+	$('input[name=repo]').upload({
+		caption : "$lang.get('btn.upload.war')",
+		hint : "$lang.get('hint.upload.war')",
+		btn_resume : "$lang.get('btn.resume')",
+		btn_delete : "$lang.get('btn.delete')",
+		btn_cancel : "$lang.get('btn.cancel')",
+		msg_stop : "$lang.get('msg.stop')",
+		msg_done : "$lang.get('msg.done')",
+		done : function(url) {
+			processing && processing.show();
+			$.post('/admin/war/add', {
+				url : url
+			}, function(d) {
+				processing && processing.hide();
+				reload();				
+			});
+		}
+	});
+});
+
+</script>
