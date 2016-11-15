@@ -12,8 +12,8 @@ public class war extends Model {
 
   @Path(login = true, access = "access.demo.admin")
   public void onGet() {
-
-    this.show("/admin/demo.index.html");
+    
+    this.show("/admin/war.index.html");
   }
 
   @Path(path = "detail", login = true, access = "access.demo.admin")
