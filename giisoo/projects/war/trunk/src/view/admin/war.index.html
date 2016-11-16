@@ -24,7 +24,7 @@
 	<tbody>
 #if($root!=1)
 	<tr>
-		<td><a href="/admin/war?f=$!this.path($f.getParentFile())">..</a></td>
+		<td><a class="icon-undo2" href="/admin/war?f=$!this.path($f.getParentFile())"></a></td>
 		<td colspan="3">&nbsp;</td>
 	</tr>
 #end
@@ -72,7 +72,8 @@ $(function() {
 		done : function(url) {
 			processing && processing.show();
 			$.post('/admin/war/add', {
-				url : url
+				url : url,
+				root: "$!this.path($f.getParentFile())"
 			}, function(d) {
 				processing && processing.hide();
 				reload();				

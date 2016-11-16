@@ -1,7 +1,7 @@
-a.wars=war应用包
-btn.upload.war=上传 war
+a.wars=应用管理
+btn.upload.war=上传文件
 hint.upload.war=
-menu.war=war包
-menu.wars=war包
-notes.war.module=war包将放入当前web容器中运行，上传后，情重启服务器;应用也可以作zip文件上传。
-war.index.title=war应用管理
+menu.war=应用管理
+menu.wars=应用管理
+notes.war.module=war/zip 包将放入当前web容器中运行，上传后，情重启服务器;应用也可以作zip文件上传。
+war.index.title=应用管理

@@ -1,7 +1,7 @@
-a.wars=Wars
-btn.upload.war=Upload war
-hint.upload.war=upload a war file
-menu.war=War
-menu.wars=Wars
-notes.war.module=war application management
-war.index.title=war management
+a.wars=Applications
+btn.upload.war=Upload application
+hint.upload.war=upload file
+menu.war=Application
+menu.wars=Applications
+notes.war.module=Application management
+war.index.title=Application management
