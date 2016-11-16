@@ -73,7 +73,7 @@ $(function() {
 			processing && processing.show();
 			$.post('/admin/war/add', {
 				url : url,
-				root: "$!this.path($f.getParentFile())"
+				root: "$!this.path($f)"
 			}, function(d) {
 				processing && processing.hide();
 				reload();				
