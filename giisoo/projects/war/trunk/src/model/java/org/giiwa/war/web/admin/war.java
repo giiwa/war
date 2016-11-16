@@ -1,6 +1,7 @@
 package org.giiwa.war.web.admin;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
@@ -140,11 +141,55 @@ public class war extends Model {
     this.response(jo);
   }
 
-  @Path(path = "detail", login = true, access = "access.config.admin")
+  @Path(path = "download", login = true, access = "access.config.admin")
   public void detail() {
-    String id = this.getString("id");
-    this.set("id", id);
-    this.show("/admin/demo.detail.html");
+    String f = this.getString("f");
+
+    File f1 = new File(webapps + f);
+
+    String range = this.getHeader("Range");
+    long total = f1.length();
+    long start = 0;
+    long end = total;
+    if (!X.isEmpty(range)) {
+      String[] s1 = X.split(range, "[=-]");
+      if (s1.length > 1) {
+        start = X.toLong(s1[1]);
+      }
+
+      if (s1.length > 2) {
+        end = Math.min(total, X.toLong(s1[2]));
+
+        if (end < start) {
+          end = start + 16 * 1024;
+        }
+      }
+    }
+
+    if (end > total) {
+      end = total;
+    }
+
+    long length = end - start;
+
+    this.setContentType("application/octet");
+    this.setHeader("Content-Disposition", "attachment; filename=\"" + f1.getName() + "\"");
+    this.setHeader("Content-Length", Long.toString(length));
+    this.setHeader("Last-Modified", lang.format(f1.lastModified(), "yyyy-MM-dd HH:mm:ss z"));
+    this.setHeader("Content-Range", "bytes " + start + "-" + (end - 1) + "/" + total);
+    if (start == 0) {
+      this.setHeader("Accept-Ranges", "bytes");
+    }
+    if (end < total) {
+      this.setStatus(206);
+    }
+
+    try {
+      IOUtil.copy(new FileInputStream(f1), this.getOutputStream(), start, end, true);
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+    }
+
   }
 
   @Path(path = "delete", login = true, access = "access.config.admin")

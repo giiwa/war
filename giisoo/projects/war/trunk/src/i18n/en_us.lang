@@ -5,3 +5,4 @@ menu.war=Application
 menu.wars=Applications
 notes.war.module=3rd web application management, the application will be run in web container, the war/zip will be auto unzip in root path, please restart the server after upload.
 war.index.title=Application management
+a.open=Open

@@ -44,12 +44,18 @@
 		</td>
 		<td>$!lang.format($f1.lastModified(), 'yyyy-MM-dd HH:mm:ss')</td>
 		<td>
-			<a href='javascript:;' onclick="_delete('$this.path($f1)', this)">$lang.get('a.delete')</a>
+			<a class='btn btn-xs btn-success' href="$this.path($f1)" target="_blank">$lang.get('a.open')</a>
+			#if($f1.isFile()) 
+			<a class='btn btn-xs btn-info' href='javascript:;' onclick="_download('$this.path($f1)')">$lang.get('a.download')</a>
+			#end
+			<a class='btn btn-xs btn-danger' href='javascript:;' onclick="_delete('$this.path($f1)', this)">$lang.get('a.delete')</a>
 		</td>
 	</tr>
 #end
 	</tbody>
 </table>
+
+<iframe id="download" style="display:none"></iframe>
 
 <script>
 function _delete(id, o) {
@@ -58,6 +64,9 @@ function _delete(id, o) {
 			$(o).parent().parent().remove();
 		})
 	}
+}
+function _download(id) {
+	$("#download").attr("src", "/admin/war/download?f=" + id);
 }
 
 $(function() {

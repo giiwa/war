@@ -3,5 +3,6 @@ btn.upload.war=上传文件
 hint.upload.war=
 menu.war=应用管理
 menu.wars=应用管理
-notes.war.module=第三方web应用管理，上传文件会被放入web容器中直接运行，如果上传到根目录的文件war/zip会自动解压释放，上传后，需要重启服务器。
+notes.war.module=第三方web应用管理，上传文件会被放入web容器中直接运行，上传到根目录的文件war/zip会自动解压释放，上传后，需要重启服务器。
 war.index.title=应用管理
+a.open=打开
