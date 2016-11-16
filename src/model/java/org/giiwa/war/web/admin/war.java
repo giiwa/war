@@ -68,49 +68,60 @@ public class war extends Model {
     if (e != null) {
       // copy the file to webapps
       try {
-        
+
         String name = e.getName();
-        int i = name.lastIndexOf(".");
-        if (i > 0) {
-          name = name.substring(0, i);
-        }
 
-        File f = new File(webapps + "/" + name);
-        if (f.exists()) {
-          IOUtil.delete(f);
-        }
-
-        // unzip
-
-        ZipInputStream in = new ZipInputStream(e.getInputStream());
-
-        /**
-         * store all entry in temp file
-         */
-
-        ZipEntry z = in.getNextEntry();
-        byte[] bb = new byte[4 * 1024];
-        while (z != null) {
-          f = new File(webapps + "/" + name + "/" + z.getName());
-
-          if (z.isDirectory()) {
-            f.mkdirs();
-          } else {
-            if (!f.exists()) {
-              f.getParentFile().mkdirs();
-            }
-
-            FileOutputStream out = new FileOutputStream(f);
-            int len = in.read(bb);
-            while (len > 0) {
-              out.write(bb, 0, len);
-              len = in.read(bb);
-            }
-
-            out.close();
+        if ((name.endsWith(".war") || name.endsWith(".zip")) && (X.isEmpty(root) || X.isSame(root, "/"))) {
+          // unzip
+          int i = name.lastIndexOf(".");
+          if (i > 0) {
+            name = name.substring(0, i);
           }
 
-          z = in.getNextEntry();
+          String file = webapps + root + "/" + name;
+          File f = new File(file);
+          if (f.exists()) {
+            IOUtil.delete(f);
+          }
+
+          ZipInputStream in = new ZipInputStream(e.getInputStream());
+
+          /**
+           * store all entry in temp file
+           */
+
+          ZipEntry z = in.getNextEntry();
+          byte[] bb = new byte[4 * 1024];
+          while (z != null) {
+            f = new File(file + "/" + z.getName());
+
+            if (z.isDirectory()) {
+              f.mkdirs();
+            } else {
+              if (!f.exists()) {
+                f.getParentFile().mkdirs();
+              }
+
+              FileOutputStream out = new FileOutputStream(f);
+              int len = in.read(bb);
+              while (len > 0) {
+                out.write(bb, 0, len);
+                len = in.read(bb);
+              }
+
+              out.close();
+            }
+
+            z = in.getNextEntry();
+          }
+        } else {
+          // copy the file there
+          String file = webapps + root + "/" + name;
+          File f = new File(file);
+          if (f.exists()) {
+            IOUtil.delete(f);
+          }
+          IOUtil.copy(e.getInputStream(), new FileOutputStream(file));
         }
 
         jo.put(X.STATE, 200);
