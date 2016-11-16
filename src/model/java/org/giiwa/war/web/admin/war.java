@@ -3,6 +3,8 @@ package org.giiwa.war.web.admin;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.giiwa.core.base.IOUtil;
 import org.giiwa.core.bean.X;
@@ -59,12 +61,58 @@ public class war extends Model {
   @Path(path = "add", login = true, access = "access.config.admin")
   public void add() {
     JSON jo = JSON.create();
+
+    String root = this.getString("root");
     String url = this.getString("url");
     Entity e = Repo.load(url);
     if (e != null) {
       // copy the file to webapps
       try {
-        IOUtil.copy(e.getInputStream(), new FileOutputStream(webapps + "/" + e.getName()));
+        
+        String name = e.getName();
+        int i = name.lastIndexOf(".");
+        if (i > 0) {
+          name = name.substring(0, i);
+        }
+
+        File f = new File(webapps + "/" + name);
+        if (f.exists()) {
+          IOUtil.delete(f);
+        }
+
+        // unzip
+
+        ZipInputStream in = new ZipInputStream(e.getInputStream());
+
+        /**
+         * store all entry in temp file
+         */
+
+        ZipEntry z = in.getNextEntry();
+        byte[] bb = new byte[4 * 1024];
+        while (z != null) {
+          f = new File(webapps + "/" + name + "/" + z.getName());
+
+          if (z.isDirectory()) {
+            f.mkdirs();
+          } else {
+            if (!f.exists()) {
+              f.getParentFile().mkdirs();
+            }
+
+            FileOutputStream out = new FileOutputStream(f);
+            int len = in.read(bb);
+            while (len > 0) {
+              out.write(bb, 0, len);
+              len = in.read(bb);
+            }
+
+            out.close();
+          }
+
+          z = in.getNextEntry();
+        }
+
         jo.put(X.STATE, 200);
         jo.put(X.MESSAGE, "ok");
       } catch (Exception e1) {
