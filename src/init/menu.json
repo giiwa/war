@@ -1,15 +1,12 @@
 [{
 			'name' : 'admin',
 			'childs' : [{
-						name : 'menu.wars',
-						classes : 'icon-xing',
-						access : 'access.config.admin',
-						seq : 1040,
+						name : 'menu.system',
 						childs : [{
 									name : 'menu.war',
 									load : '/admin/war',
 									access : 'access.config.admin',
-									seq : 10,
+									seq : 1050,
 									classes : 'icon-xing2'
 								}]
 					}]
