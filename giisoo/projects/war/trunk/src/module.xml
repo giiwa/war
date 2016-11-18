@@ -17,5 +17,5 @@
     <!--add all required modules here-->
     <module name="default" minversion="1.2.1611150948" maxversion="1.2.*"/>
   </required>
-  <license>Commercial License</license>
+  <license>Apache License V2</license>
 </module>
